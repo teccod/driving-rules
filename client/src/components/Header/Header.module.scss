@@ -1,0 +1,30 @@
+.header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	.header-title {
+		color: #fff;
+		width: 753px;
+		font-size: 48px;
+		font-weight: 900;
+		margin-top: 100px;
+		margin-bottom: 60px;
+	}
+
+	.country-selectors {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.control-panel {
+		display: flex;
+		flex-direction: column;
+		width: 70%;
+
+        &-filters{
+            display: flex;
+        }
+	}
+}

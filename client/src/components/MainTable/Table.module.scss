@@ -1,0 +1,22 @@
+.main-datatable-block{
+    display: flex;
+    width: 70%;
+    margin-top: 30px;
+
+    .main-datatable-container{
+
+        margin: 8px;
+
+        thead th{
+            font-weight: 900;
+        }
+
+        thead th:not(:first-child){
+            text-align: center;
+        }
+
+        tbody td:not(:first-child){
+            text-align: center;
+        }
+    }
+}
