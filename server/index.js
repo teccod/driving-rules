@@ -22,8 +22,10 @@ app.get('/api/getCountriesTable', function(req, res) {
     let sql = "SELECT * FROM countries_rule";
 
     connection.query(sql, function(err, result){
-        if(err) console.log(err.message)
-        res.json(result)
+        if(err)
+            res.status(500).send({'message' : err.message})
+        else
+            res.json(result)
     })
 });
 
