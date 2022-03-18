@@ -5,7 +5,14 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { makeStyles } from "@mui/styles";
 import styler from "./Content.module.scss";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	setKnowCountry,
+	response,
+	setDataTable,
+	filterParams,
+	setDestinationCountry,
+} from "../Content/reducers/index";
 
 const useStyles = makeStyles(() => ({
 	menuPaper: {
@@ -13,17 +20,10 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-export default function CountrySelectors(props) {
-	var [countryList, setCountryList] = React.useState([]);
-	var [selectedKnowCountry, setSelectedKnowCountry] = React.useState("");
-	var [selectedDestinationCountry, setSelectedDestinationCountry] = React.useState("");
+export default function CountrySelectors() {
 	const classes = useStyles();
-
-	React.useEffect(() => {
-		axios.get("http://127.0.0.1:4000/api/getCountriesTable").then((response) => {
-			setCountryList(response.data);
-		});
-	}, []);
+	const dispatch = useDispatch();
+	const countryList = useSelector(response).data;
 
 	return (
 		<div className={styler["country-selectors"]}>
@@ -32,12 +32,12 @@ export default function CountrySelectors(props) {
 				<Select
 					labelId="country-know-rules-label"
 					id="country-know-rules"
-					value={selectedKnowCountry}
+					value={useSelector(filterParams).knowCountry}
 					style={{ backgroundColor: "#fff" }}
 					MenuProps={{ classes: { paper: classes.menuPaper } }}
 					onChange={(event) => {
-						props.selectKnowCountry(event.target.value);
-						setSelectedKnowCountry(event.target.value);
+						dispatch(setKnowCountry(event.target.value));
+						dispatch(setDataTable());
 					}}
 				>
 					<MenuItem value="">
@@ -57,12 +57,12 @@ export default function CountrySelectors(props) {
 				<Select
 					labelId="country-destination-label"
 					id="demo-simple-select-helper"
-					value={selectedDestinationCountry}
+					value={useSelector(filterParams).destinationCountry}
 					style={{ backgroundColor: "#fff" }}
 					MenuProps={{ classes: { paper: classes.menuPaper } }}
 					onChange={(event) => {
-						props.selectDestinationCountry(event.target.value);
-						setSelectedDestinationCountry(event.target.value);
+						dispatch(setDestinationCountry(event.target.value));
+						dispatch(setDataTable());
 					}}
 				>
 					<MenuItem value="">

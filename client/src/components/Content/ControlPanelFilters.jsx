@@ -9,6 +9,9 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@mui/styles";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setOnlyDifferences, onlyDifferences } from "./reducers/index";
+
 const useStyles = makeStyles(() => ({
 	formControl: {
 		marginRight: "20px",
@@ -27,12 +30,8 @@ const useStyles = makeStyles(() => ({
 
 export default function MyComponent(props) {
 	const classes = useStyles();
-
 	const [age, setAge] = React.useState("");
-
-	const handleChange = (event) => {
-		setAge(event.target.value);
-	};
+	const dispatch = useDispatch();
 
 	return (
 		<Card
@@ -42,15 +41,18 @@ export default function MyComponent(props) {
 				justifyContent: "space-between",
 			}}
 		>
-			<FormControl
-				component="fieldset"
-				sx={{ p: 1 }}
-				style={{ paddingLeft: 20 }}
-			>
+			<FormControl component="fieldset" sx={{ p: 1 }} style={{ paddingLeft: 20 }}>
 				<FormGroup aria-label="position" row>
 					<FormControlLabel
 						value="Show only differences"
-						control={<Checkbox defaultChecked />}
+						control={
+							<Checkbox
+								defaultChecked
+								onChange={(event) => {
+									dispatch(setOnlyDifferences(event.target.checked))
+								}}
+							/>
+						}
 						label="Show only differences"
 						labelPlacement="end"
 					/>
@@ -76,18 +78,11 @@ export default function MyComponent(props) {
 			</FormControl>
 
 			<div className={classes.divcontrol}>
-				<InputLabel
-					className={classes.label}
-					id="demo-simple-select-label"
-				>
+				<InputLabel className={classes.label} id="demo-simple-select-label">
 					Sort by:
 				</InputLabel>
 				<FormControl variant="standard" className={classes.formControl}>
-					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						value={""}
-					>
+					<Select labelId="demo-simple-select-label" id="demo-simple-select" value={""}>
 						<MenuItem value={10}>Ten</MenuItem>
 						<MenuItem value={20}>Twenty</MenuItem>
 						<MenuItem value={30}>Thirty</MenuItem>
