@@ -1,4 +1,4 @@
-import { createSlice, combineReducers, configureStore, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 function itemToRowTable(item, key, description) {
 	return [key].concat(
@@ -11,17 +11,17 @@ function itemToRowTable(item, key, description) {
 export const filterSlice = createSlice({
   name: 'compareTable',
   initialState: {
-    onlyDifferences: true,
     dataTable: false,
     response: {},
     filterParams: {
         knowCountry: "",
-        destinationCountry: ""
+        destinationCountry: "",
+        onlyDifferences: true
     }
   },
   reducers: {
     setOnlyDifferences(state, value){
-        state.onlyDifferences = value.payload;
+        state.filterParams.onlyDifferences = value.payload;
     },
 
     setResponse: (state, value) =>{
@@ -35,39 +35,52 @@ export const filterSlice = createSlice({
         state.filterParams.destinationCountry = value.payload
     },
 
-    setDataTable(state){
+    updateDataTable(state){
         var kCountry = state.filterParams.knowCountry;
         var dCountry = state.filterParams.destinationCountry;
 
-        if(kCountry === '' && dCountry === ''){
-            state.dataTable = false
-        }else{
-            const data = (state.response.data).filter(item => {
+        if(kCountry !== '' || dCountry !== ''){
+            var data = (state.response.data).filter(item => {
                 return item.Country === kCountry || item.Country === dCountry
             });
+
+            const header = [kCountry, dCountry].filter(item => { return item !== '' })
     
             state.dataTable = {
-                header: [
-                    kCountry,
-                    dCountry
-                ],
+                header: header,
                 content: [
-                    itemToRowTable(data, "Spare_bulb_required"),
                     itemToRowTable(data, "Speed_limit_on_motorway_kmh"),
                     itemToRowTable(data, "Speed_limit_on_dual_carriageway_kmh"),
-                    itemToRowTable(data, "Seatbelt_required"),
                     itemToRowTable(data, "Speed_limit_on_single_carriageway_kmh"),
+                    itemToRowTable(data, "Speed_limit_in_urban_area"),
+                    itemToRowTable(data, "Permitted_alcohol_level_"),
+                    itemToRowTable(data, "Toll_roads"),
+                    itemToRowTable(data, "Seatbelt_required"),
+                    itemToRowTable(data, "Minimum_child_age_front_seat"),
+                    itemToRowTable(data, "Triangle_required"),
+                    itemToRowTable(data, "First_aid_required"),
+                    itemToRowTable(data, "Fire_extinguisher_required"),
+                    itemToRowTable(data, "Spare_bulb_required"),
+                    itemToRowTable(data, "Minimum_drivers_age"),
                     itemToRowTable(data, "Tow_rope_required"),
                 ],
             };
+
+            if(state.filterParams.onlyDifferences){
+                state.dataTable.content = (state.dataTable.content).filter(item => {
+                    return item[1] !== item[2]
+                })
+            }
+            
+        }else{
+            state.dataTable = false
         }
     }
   },
 })
 
-export const { setOnlyDifferences, setResponse, setDataTable, setKnowCountry, setDestinationCountry } = filterSlice.actions
+export const { setOnlyDifferences, setResponse, updateDataTable, setKnowCountry, setDestinationCountry } = filterSlice.actions
 
-export const onlyDifferences = (state) => state.compareTable.onlyDifferences
 export const dataTable = (state) => state.compareTable.dataTable
 export const response = (state) => state.compareTable.response
 export const filterParams = (state) => state.compareTable.filterParams

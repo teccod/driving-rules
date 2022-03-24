@@ -6,24 +6,13 @@ import MainTable from "../MainTable/MainTable"
 
 export default function Content(props) {
 
-    const [selectedKnowCountry, setSelectedKnowCountry] = React.useState('');
-    const [selectedDestinationCountry, setSelectedDestinationCountry] = React.useState('');
-
-    function selectKnowCountry(country){
-        setSelectedKnowCountry(country);
-    }
-
-    function selectDestinationCountry(country){
-        setSelectedDestinationCountry(country);
-    }
-
 	return (
 		<div className={styler['content']}>
 			<div className={styler["control-panel"]}>
-				<CountrySelectors selectKnowCountry={selectKnowCountry} selectDestinationCountry={selectDestinationCountry}/>
+				<CountrySelectors />
                 <ControlPanelFilters />
 			</div>
-            <MainTable knowCountry={selectedKnowCountry} destinationCountry={selectedDestinationCountry}/>
+            <MainTable />
 		</div>
 	);
 }

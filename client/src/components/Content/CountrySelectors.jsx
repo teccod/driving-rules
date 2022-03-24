@@ -4,12 +4,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { makeStyles } from "@mui/styles";
+import { setCountryResponse } from "../../http/countryAPI";
 import styler from "./Content.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setKnowCountry,
 	response,
-	setDataTable,
+	updateDataTable,
 	filterParams,
 	setDestinationCountry,
 } from "../Content/reducers/index";
@@ -25,6 +26,10 @@ export default function CountrySelectors() {
 	const dispatch = useDispatch();
 	const countryList = useSelector(response).data;
 
+	React.useEffect(() => {
+		dispatch(setCountryResponse());
+	}, [dispatch]);
+
 	return (
 		<div className={styler["country-selectors"]}>
 			<FormControl variant="filled" sx={{ m: 1 }} fullWidth={true}>
@@ -37,7 +42,7 @@ export default function CountrySelectors() {
 					MenuProps={{ classes: { paper: classes.menuPaper } }}
 					onChange={(event) => {
 						dispatch(setKnowCountry(event.target.value));
-						dispatch(setDataTable());
+						dispatch(updateDataTable());
 					}}
 				>
 					<MenuItem value="">
@@ -62,7 +67,7 @@ export default function CountrySelectors() {
 					MenuProps={{ classes: { paper: classes.menuPaper } }}
 					onChange={(event) => {
 						dispatch(setDestinationCountry(event.target.value));
-						dispatch(setDataTable());
+						dispatch(updateDataTable());
 					}}
 				>
 					<MenuItem value="">

@@ -9,8 +9,8 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@mui/styles";
 
-import { useSelector, useDispatch } from "react-redux";
-import { setOnlyDifferences, onlyDifferences } from "./reducers/index";
+import { useDispatch } from "react-redux";
+import { setOnlyDifferences, updateDataTable } from "./reducers/index";
 
 const useStyles = makeStyles(() => ({
 	formControl: {
@@ -50,6 +50,7 @@ export default function MyComponent(props) {
 								defaultChecked
 								onChange={(event) => {
 									dispatch(setOnlyDifferences(event.target.checked))
+									dispatch(updateDataTable());
 								}}
 							/>
 						}
