@@ -30,7 +30,6 @@ const useStyles = makeStyles(() => ({
 
 export default function MyComponent(props) {
 	const classes = useStyles();
-	const [age, setAge] = React.useState("");
 	const dispatch = useDispatch();
 
 	return (
